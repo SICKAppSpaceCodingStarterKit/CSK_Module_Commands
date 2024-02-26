@@ -3,13 +3,12 @@
 
 Module to provide the possibility to execute dynamic function calls via UI during runtime.
 
-*If available, please also add a screenshot/gif of the UI of the module here placed within /docu/media/ (see code)*
 ![](./docu/media/UI_Screenshot.png)
 
 ## How to Run
 
 [***...please fill with informations...***]  
-For further information check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_Commands/main/docu/CSK_Module_Commands.html) in the folder "docu".
+For further information check out the [documentation](https://raw.githack.com/golluroSICKAG/CSK_Module_Commands/main/docu/CSK_Module_Commands.html) in the folder "docu".
 
 ## Information
 

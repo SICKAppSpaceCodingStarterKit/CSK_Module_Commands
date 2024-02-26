@@ -47,6 +47,34 @@ ToDo +
                     <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </event>
+                <event name="OnNewFunctionName">
+                    <desc>Event to notify name of function to execute.</desc>
+                    <param desc="Name of function (like CSK_ModuleName.FunctionName)." multiplicity="1" name="functionName" type="string"/>
+                </event>
+                <event name="OnNewStatusParameterTypes">
+                    <desc>Event to notify currently selected parameter values to use for function call.</desc>
+                    <param desc="Types of parameters." multiplicity="+" name="parameterTypes" type="string"/>
+                </event>
+                <event name="OnNewStatusParameterAmount">
+                    <desc>Notify amount of parameters to use for function call.</desc>
+                    <param desc="Amount of parameters." multiplicity="1" name="amount" type="int"/>
+                </event>
+                <event name="OnNewLog">
+                    <desc>NJotify log messages.</desc>
+                    <param desc="Log messages." multiplicity="1" name="log" type="string"/>
+                </event>
+                <event name="OnNewStatusBoolParameterValues">
+                    <desc>Notify boolean values of parameters.</desc>
+                    <param desc="Values" multiplicity="+" name="values" type="bool"/>
+                </event>
+                <event name="OnNewStatusStringParameterValues">
+                    <desc>Notify stringvalues of parameters.</desc>
+                    <param desc="Values" multiplicity="+" name="values" type="string"/>
+                </event>
+                <event name="OnNewStatusNumberParameterValues">
+                    <desc>Notify number values of parameters.</desc>
+                    <param desc="Values" multiplicity="+" name="values" type="int"/>
+                </event>
                 <function name="setParameterName">
                     <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
                     <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
@@ -64,6 +92,29 @@ ToDo +
                 <function name="pageCalled">
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
+                </function>
+                <function name="callFunctionViaUI">
+                    <desc>Function to call preconfigured function incl. optional set parameters.</desc>
+                </function>
+                <function name="setParameterAmount">
+                    <desc>Function to set amount of parameters to use for function call.</desc>
+                    <param desc="Amount of parameters." multiplicity="1" name="amount" type="int"/>
+                </function>
+                <function name="setFunctionName">
+                    <desc>Function to set function name to execute.</desc>
+                    <param desc="Name of function (like CSK_Module.FunctionName)" multiplicity="1" name="functionName" type="string"/>
+                </function>
+                <function name="commandPrint">
+                    <desc>Function to print dynamic content.</desc>
+                    <param desc="Content to print." multiplicity="1" name="content" type="string"/>
+                </function>
+                <function name="setParameterType">
+                    <desc>Function to set type of parameter.</desc>
+                    <param desc="Selected parameter and type of parameter to set." multiplicity="+" name="paramType" type="string"/>
+                </function>
+                <function name="setParameterValue">
+                    <desc>Function to set value of specific parameter.</desc>
+                    <param desc="Parameter number and value to set." multiplicity="+" name="paramValue" type="auto"/>
                 </function>
             </serves>
         </crown>

@@ -20,7 +20,16 @@ local commands_Model
 
 -- ************************ UI Events Start ********************************
 
--- Script.serveEvent("CSK_Commands.OnNewEvent", "Commands_OnNewEvent")
+Script.serveEvent('CSK_Commands.OnNewFunctionName', 'Commands_OnNewFunctionName')
+Script.serveEvent('CSK_Commands.OnNewStatusParameterAmount', 'Commands_OnNewStatusParameterAmount')
+Script.serveEvent('CSK_Commands.OnNewStatusParameterTypes', 'Commands_OnNewStatusParameterTypes')
+
+Script.serveEvent('CSK_Commands.OnNewStatusBoolParameterValues', 'Commands_OnNewStatusBoolParameterValues')
+Script.serveEvent('CSK_Commands.OnNewStatusStringParameterValues', 'Commands_OnNewStatusStringParameterValues')
+Script.serveEvent('CSK_Commands.OnNewStatusNumberParameterValues', 'Commands_OnNewStatusNumberParameterValues')
+
+Script.serveEvent('CSK_Commands.OnNewLog', 'Commands_OnNewLog')
+
 Script.serveEvent("CSK_Commands.OnNewStatusLoadParameterOnReboot", "Commands_OnNewStatusLoadParameterOnReboot")
 Script.serveEvent("CSK_Commands.OnPersistentDataModuleAvailable", "Commands_OnPersistentDataModuleAvailable")
 Script.serveEvent("CSK_Commands.OnNewParameterName", "Commands_OnNewParameterName")
@@ -31,17 +40,7 @@ Script.serveEvent('CSK_Commands.OnUserLevelMaintenanceActive', 'Commands_OnUserL
 Script.serveEvent('CSK_Commands.OnUserLevelServiceActive', 'Commands_OnUserLevelServiceActive')
 Script.serveEvent('CSK_Commands.OnUserLevelAdminActive', 'Commands_OnUserLevelAdminActive')
 
--- ...
-
 -- ************************ UI Events End **********************************
-
---[[
---- Some internal code docu for local used function
-local function functionName()
-  -- Do something
-
-end
-]]
 
 --**************************************************************************
 --********************** End Global Scope **********************************
@@ -108,12 +107,20 @@ local function handleOnExpiredTmrCommands()
 
   updateUserLevel()
 
-  -- Script.notifyEvent("Commands_OnNewEvent", false)
+  Script.notifyEvent("Commands_OnNewFunctionName", commands_Model.functionName)
+  Script.notifyEvent("Commands_OnNewStatusParameterAmount", commands_Model.parameterAmount)
+  Script.notifyEvent("Commands_OnNewStatusParameterTypes", commands_Model.parameterConfig.type)
+
+  Script.notifyEvent("Commands_OnNewStatusBoolParameterValues", commands_Model.parameterConfig.boolValues)
+  Script.notifyEvent("Commands_OnNewStatusStringParameterValues", commands_Model.parameterConfig.stringValues)
+  Script.notifyEvent("Commands_OnNewStatusNumberParameterValues", commands_Model.parameterConfig.numberValues)
+
+
+  Script.notifyEvent("Commands_OnNewLog", commands_Model.log)
 
   Script.notifyEvent("Commands_OnNewStatusLoadParameterOnReboot", commands_Model.parameterLoadOnReboot)
   Script.notifyEvent("Commands_OnPersistentDataModuleAvailable", commands_Model.persistentModuleAvailable)
   Script.notifyEvent("Commands_OnNewParameterName", commands_Model.parametersName)
-  -- ...
 end
 Timer.register(tmrCommands, "OnExpired", handleOnExpiredTmrCommands)
 
@@ -126,13 +133,72 @@ local function pageCalled()
 end
 Script.serveFunction("CSK_Commands.pageCalled", pageCalled)
 
---[[
-local function setSomething(value)
-  _G.logger:info(nameOfModule .. ": Set new value = " .. value)
-  commands_Model.varA = value
+local function setFunctionName(functionName)
+  commands_Model.functionName = functionName
 end
-Script.serveFunction("CSK_Commands.setSomething", setSomething)
-]]
+Script.serveFunction('CSK_Commands.setFunctionName', setFunctionName)
+
+local function setParameterAmount(amount)
+  commands_Model.parameterAmount = amount
+end
+Script.serveFunction('CSK_Commands.setParameterAmount', setParameterAmount)
+
+local function checkParameterType(position, paramType)
+  if paramType == 'Bool' then
+    return commands_Model.parameterConfig.boolValues[position]
+  elseif paramType == 'Number' then
+    return commands_Model.parameterConfig.numberValues[position]
+  else
+    return commands_Model.parameterConfig.stringValues[position]
+  end
+end
+
+local function callFunctionViaUI()
+  if commands_Model.parameterAmount == 0 then
+    commands_Model.callFunction(commands_Model.functionName)
+  elseif commands_Model.parameterAmount == 1 then
+    commands_Model.callFunction(commands_Model.functionName, checkParameterType(1, commands_Model.parameterConfig.type[1]))
+  elseif commands_Model.parameterAmount == 2 then
+    commands_Model.callFunction(commands_Model.functionName, checkParameterType(1, commands_Model.parameterConfig.type[1]), checkParameterType(2, commands_Model.parameterConfig.type[2]))
+  elseif commands_Model.parameterAmount == 3 then
+    commands_Model.callFunction(commands_Model.functionName, checkParameterType(1, commands_Model.parameterConfig.type[1]), checkParameterType(2, commands_Model.parameterConfig.type[2]), checkParameterType(3, commands_Model.parameterConfig.type[3]))
+  elseif commands_Model.parameterAmount == 4 then
+    commands_Model.callFunction(commands_Model.functionName, checkParameterType(1, commands_Model.parameterConfig.type[1]), checkParameterType(2, commands_Model.parameterConfig.type[2]), checkParameterType(3, commands_Model.parameterConfig.type[3]), checkParameterType(4, commands_Model.parameterConfig.type[4]))
+  end
+end
+Script.serveFunction('CSK_Commands.callFunctionViaUI', callFunctionViaUI)
+
+local function commandPrint(content)
+  print(content)
+end
+Script.serveFunction('CSK_Commands.commandPrint', commandPrint)
+
+local function setParameterType(paramType)
+  local selPara = tonumber(paramType[1])
+  commands_Model.parameterConfig.type[selPara] = paramType[2]
+  Script.notifyEvent("Commands_OnNewStatusParameterTypes", commands_Model.parameterConfig.type)
+  Script.notifyEvent("Commands_OnNewStatusBoolParameterValues", commands_Model.parameterConfig.boolValues)
+  Script.notifyEvent("Commands_OnNewStatusStringParameterValues", commands_Model.parameterConfig.stringValues)
+  Script.notifyEvent("Commands_OnNewStatusNumberParameterValues", commands_Model.parameterConfig.numberValues)
+end
+Script.serveFunction('CSK_Commands.setParameterType', setParameterType)
+
+local function setParameterValue(paramValue)
+  local selPara = tonumber(paramValue[1])
+
+  if commands_Model.parameterConfig.type[selPara] == 'Number' then
+    commands_Model.parameterConfig.numberValues[selPara] = tonumber(paramValue[2])
+  elseif commands_Model.parameterConfig.type[selPara] == 'Bool' then
+    if paramValue[2] == 'true' then
+      commands_Model.parameterConfig.boolValues[selPara] = true
+    else
+      commands_Model.parameterConfig.boolValues[selPara] = false
+    end
+  else
+    commands_Model.parameterConfig.stringValues[selPara] = tostring(paramValue[2])
+  end
+end
+Script.serveFunction('CSK_Commands.setParameterValue', setParameterValue)
 
 -- *****************************************************************
 -- Following function can be adapted for CSK_PersistentData module usage
