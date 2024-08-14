@@ -28,8 +28,8 @@
 
 -- If app property "LuaLoadAllEngineAPI" is FALSE, use this to load and check for required APIs
 -- This can improve performance of garbage collection
+_G.availableAPIs = require('System/Commands/helper/checkAPIs') -- can be used to adjust function scope of the module related on available APIs of the device
 
---_G.availableAPIs = require('System/Commands/helper/checkAPIs') -- can be used to adjust function scope of the module related on available APIs of the device
 -----------------------------------------------------------
 -- Logger
 _G.logger = Log.SharedLogger.create('ModuleLogger')
@@ -43,6 +43,11 @@ _G.logHandle:applyConfig()
 -- Loading script regarding Commands_Model
 -- Check this script regarding Commands_Model parameters and functions
 _G.commands_Model = require('System/Commands/Commands_Model')
+--require('System/Commands/FlowConfig/Commands_FlowConfig') -- currently not needed
+
+if _G.availableAPIs.specific == false then
+  _G.logger:warning("CSK_Commands: Relevant CROWN(s) not available on device. Module is not supported...")
+end
 
 --**************************************************************************
 --**********************End Global Scope ***********************************

@@ -33,25 +33,51 @@ commands_Model.helperFuncs = require('System/Commands/helper/funcs')
 
 -- Create parameters / instances for this module
 commands_Model.log = '' -- Stored log messages
-commands_Model.functionName = 'CSK_Commands.commandPrint' -- Name of functin to execute like 'CSK_ModuleName.FunctionName'
-commands_Model.parameterConfig = {}
-commands_Model.parameterConfig.type = {}
-commands_Model.parameterConfig.boolValues = {}
-commands_Model.parameterConfig.numberValues = {}
-commands_Model.parameterConfig.stringValues = {}
+commands_Model.mode = 'Function' -- What mode to use: 'Function' to call or 'Event' to notify
 
-for i = 1, 4 do
-  table.insert(commands_Model.parameterConfig.type, 'String')
-  table.insert(commands_Model.parameterConfig.boolValues, false)
-  table.insert(commands_Model.parameterConfig.numberValues, 1)
-  table.insert(commands_Model.parameterConfig.stringValues, 'Value')
-end
-commands_Model.parameterAmount = 0
+commands_Model.functionName = 'CSK_Commands.print' -- Name of functin to execute like
+commands_Model.eventName = 'CSK_Commands.OnNewEvent' -- Name of event to notify
+
+commands_Model.parameterAmount = 0 -- Amount of parameters for event / function call
+commands_Model.selectedParameter = '' -- Parameter of command / event to edit
+
+commands_Model.selectedCommand = '' -- Selected command in UI to edit
+
+commands_Model.tempType = 'String' -- Temp setup of parameter type
+commands_Model.tempValue = 'ABC' -- Temp setup of parameter value
+
+-- Configuration of parameter
+commands_Model.tempParameters = {}
+-- Internally will look like this:
+--[[
+local parameter = {}
+parameter.type = 'String'
+parameter.value = 'ABC'
+table.insert(commands_Model.tempParameters, parameter)
+-- commands_Model.tempParameters[1].type
+-- commands_Model.tempParameters[1].value
+]]
+
+commands_Model.styleForUI = 'None' -- Optional parameter to set UI style
+commands_Model.version = Engine.getCurrentAppVersion() -- Version of module
 
 -- Parameters to be saved permanently if wanted
 commands_Model.parameters = {}
---commands_Model.parameters.paramA = 'paramA' -- Short docu of variable
---commands_Model.parameters.paramB = 123 -- Short docu of variable
+commands_Model.parameters.flowConfigPriority = CSK_FlowConfig ~= nil or false -- Status if FlowConfig should have priority for FlowConfig relevant configurations
+
+commands_Model.parameters.commands = {} -- Commands to run
+-- Internally will look like this:
+--[[
+local command = {}
+command.type = 'Function' or 'Event'
+command.name = 'CSK_Commands.OnNewEvent'
+
+command.parameters = {}
+commands_Model.parameters.commands[1].parameters[1].type = 'String'
+commands_Model.parameters.commands[1].parameters[1].value = 'ABC'
+
+table.insert(commands_Model.parameters.commands, command)
+]]
 
 --**************************************************************************
 --********************** End Global Scope **********************************
@@ -59,6 +85,12 @@ commands_Model.parameters = {}
 --**********************Start Function Scope *******************************
 --**************************************************************************
 
+--- Function to react on UI style change
+local function handleOnStyleChanged(theme)
+  commands_Model.styleForUI = theme
+  Script.notifyEvent("Commands_OnNewStatusCSKStyle", commands_Model.styleForUI)
+end
+Script.register('CSK_PersistentData.OnNewStatusCSKStyle', handleOnStyleChanged)
 
 local function getLog(log)
   commands_Model.log = log
@@ -73,24 +105,50 @@ local regSuc = Script.register('CSK_Logger.OnNewCompleteLogfile', getLog)
 ---@param param3 auto? Optional parameter1
 ---@param param4 auto? Optional parameter1
 local function callFunction(functionName, param1, param2, param3, param4)
-  local suc = Script.isServedAsFunction(functionName)
-  if suc then
-    if param1 ~= nil and param2 ~= nil and param3 ~= nil and param4 ~= nil then
-      Script.callFunction(functionName, param1, param2, param3, param4)
-    elseif param1 ~= nil and param2 ~= nil and param3 ~= nil then
-      Script.callFunction(functionName, param1, param2, param3)
-    elseif param1 ~= nil and param2 ~= nil then
-      Script.callFunction(functionName, param1, param2)
-    elseif param1 ~= nil then
-      Script.callFunction(functionName, param1)
-    else
-      Script.callFunction(functionName)
-    end
+  --local suc = Script.isServedAsFunction(functionName)  -- Not sure if needed in future
+  local suc
+  if param1 ~= nil and param2 ~= nil and param3 ~= nil and param4 ~= nil then
+    suc = Script.callFunction(functionName, param1, param2, param3, param4)
+  elseif param1 ~= nil and param2 ~= nil and param3 ~= nil then
+    suc = Script.callFunction(functionName, param1, param2, param3)
+  elseif param1 ~= nil and param2 ~= nil then
+    suc = Script.callFunction(functionName, param1, param2)
+  elseif param1 ~= nil then
+    suc = Script.callFunction(functionName, param1)
   else
-    _G.logger:info(nameOfModule .. ": Not able to call function '" .. tostring(functionName) .. "'")
+    suc = Script.callFunction(functionName)
+  end
+  if not suc then
+    _G.logger:warning(nameOfModule .. ": No success to call '" .. tostring(functionName) .. "'")
   end
 end
 commands_Model.callFunction = callFunction
+
+--- Function to notify event and optionally set function parameters
+---@param eventName string Name of event to notify
+---@param param1 auto? Optional parameter1
+---@param param2 auto? Optional parameter1
+---@param param3 auto? Optional parameter1
+---@param param4 auto? Optional parameter1
+local function notifyEvent(eventName, param1, param2, param3, param4)
+  local suc = Script.isServedAsEvent(eventName)
+  if not suc then
+    Script.serveEvent(eventName, eventName, 'auto:?, auto:?, auto:?, auto:?')
+  end
+
+  if param1 ~= nil and param2 ~= nil and param3 ~= nil and param4 ~= nil then
+    Script.notifyEvent(eventName, param1, param2, param3, param4)
+  elseif param1 ~= nil and param2 ~= nil and param3 ~= nil then
+    Script.notifyEvent(eventName, param1, param2, param3)
+  elseif param1 ~= nil and param2 ~= nil then
+    Script.notifyEvent(eventName, param1, param2)
+  elseif param1 ~= nil then
+    Script.notifyEvent(eventName, param1)
+  else
+    Script.notifyEvent(eventName)
+  end
+end
+commands_Model.notifyEvent = notifyEvent
 
 --*************************************************************************
 --********************** End Function Scope *******************************
