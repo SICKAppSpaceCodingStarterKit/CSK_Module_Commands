@@ -6,7 +6,7 @@ Module to provide the possibility to execute dynamic function calls / to notify 
 
 ## How to Run
 
-For further information check out the [documentation](https://raw.githack.com/golluroSICKAG/CSK_Module_Commands/main/docu/CSK_Module_Commands.html) in the folder "docu".
+For further information check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_Commands/main/docu/CSK_Module_Commands.html) in the folder "docu".
 
 ## Information
 
