@@ -6,7 +6,8 @@
         </crown>
         <crown name="CSK_Commands">
             <trait>released</trait>
-            <desc>Module to dynamically call served functions or notify served events. +
+            <desc>Module to dynamically call served functions or notify served events during runtime. +
+By using this module it is possible to adapt the application without the need to stop it and to adapt the code. +
 Check UI of this module for most available features. +
 {empty} + 
 Typically the features of this module are used like this: +
@@ -18,6 +19,7 @@ Optionally you can add parameters to the function / event. To do so, add paramet
 {empty} + 
 ** 2) List of commands** +
 It is possible to set a list of commands to be called / notified one after another. +
+This can be very helpful to summarize a procedure to configure the system by predefined function calls / events. +
 You can add a predefined command via 'addCommandViaUI' to that list and start the processing via 'runCommands'.</desc>
             <serves>
                 <event name="OnNewStatusLoadParameterOnReboot">
@@ -64,7 +66,7 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
                     <param desc="Amount of parameters." multiplicity="1" name="amount" type="int"/>
                 </event>
                 <event name="OnNewLog">
-                    <desc>NJotify log messages.</desc>
+                    <desc>Notify log messages.</desc>
                     <param desc="Log messages." multiplicity="1" name="log" type="string"/>
                 </event>
                 <event name="OnNewStatusBoolParameterValue">
@@ -140,7 +142,7 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
                 </function>
                 <function name="print">
                     <desc>Function to print dynamic content.</desc>
-                    <param desc="Content to print." multiplicity="1" name="content" type="string"/>
+                    <param desc="Content to print." multiplicity="?" name="content" type="string"/>
                 </function>
                 <function name="setParameterType">
                     <desc>Function to set type of parameter.</desc>
@@ -173,7 +175,8 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
                     <desc>Function to clear FlowConfig relevant configurations.</desc>
                 </function>
                 <function name="setFlowConfigPriority">
-                    <desc>Function to configure if FlowConfig should have priority for FlowConfig relevant configuration.</desc>
+                    <desc>Function to configure if FlowConfig should have priority for FlowConfig relevant configuration. +
+INFO: FlowConfig has currently no effect for this module.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </function>
                 <function name="getStatusModuleActive">
@@ -202,7 +205,7 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
                 </function>
                 <function name="sleep">
                     <desc>Function to call 'Script.sleep'.</desc>
-                    <param desc="Time to sleep." multiplicity="1" name="time" type="int"/>
+                    <param desc="Time to sleep in ms." multiplicity="1" name="time" type="int"/>
                 </function>
             </serves>
         </crown>

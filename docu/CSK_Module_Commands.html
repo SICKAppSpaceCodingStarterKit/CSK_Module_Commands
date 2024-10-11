@@ -619,7 +619,7 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <div class="details">
 <span id="author" class="author">SICK AG</span><br>
 <span id="revnumber">version 1.0.0,</span>
-<span id="revdate">2024-08-14</span>
+<span id="revdate">2024-10-11</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -719,7 +719,7 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Date</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2024-08-14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-11</p></td>
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Author</p></th>
@@ -754,7 +754,8 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <div class="sect3">
 <h4 id="_short_description">Short description</h4>
 <div class="paragraph">
-<p>Module to dynamically call served functions or notify served events.<br>
+<p>Module to dynamically call served functions or notify served events during runtime.<br>
+By using this module it is possible to adapt the application without the need to stop it and to adapt the code.<br>
 Check UI of this module for most available features.<br>
 <br>
 Typically the features of this module are used like this:<br>
@@ -766,6 +767,7 @@ Optionally you can add parameters to the function / event. To do so, add paramet
 <br>
 <strong> 2) List of commands</strong><br>
 It is possible to set a list of commands to be called / notified one after another.<br>
+This can be very helpful to summarize a procedure to configure the system by predefined function calls / events.<br>
 You can add a predefined command via 'addCommandViaUI' to that list and start the processing via 'runCommands'.</p>
 </div>
 </div>
@@ -1151,7 +1153,7 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">?</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Content to print.</p></td>
 </tr>
 </tbody>
@@ -1354,7 +1356,8 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
 <div class="sect5">
 <h6 id="_short_description_16">Short description</h6>
 <div class="paragraph">
-<p>Function to configure if FlowConfig should have priority for FlowConfig relevant configuration.</p>
+<p>Function to configure if FlowConfig should have priority for FlowConfig relevant configuration.<br>
+INFO: FlowConfig has currently no effect for this module.</p>
 </div>
 </div>
 <div class="sect5">
@@ -1775,7 +1778,7 @@ You can add a predefined command via 'addCommandViaUI' to that list and start th
 <td class="tableblock halign-left valign-top"><p class="tableblock">time</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Time to sleep.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time to sleep in ms.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1866,7 +1869,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect5">
 <h6 id="_short_description_28">Short description</h6>
 <div class="paragraph">
-<p>NJotify log messages.</p>
+<p>Notify log messages.</p>
 </div>
 </div>
 <div class="sect5">
@@ -2934,7 +2937,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2024-08-14 13:13:34 +0200
+Last updated 2024-10-11 09:51:38 +0200
 </div>
 </div>
 <script type="text/javascript">

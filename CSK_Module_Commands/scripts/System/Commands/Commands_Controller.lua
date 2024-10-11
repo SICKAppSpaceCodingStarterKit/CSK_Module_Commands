@@ -121,7 +121,7 @@ local function handleOnExpiredTmrCommands()
 
   updateUserLevel()
 
-  Script.notifyEvent("Commands_OnNewStatusModuleVersion", commands_Model.version)
+  Script.notifyEvent("Commands_OnNewStatusModuleVersion", 'v' .. commands_Model.version)
   Script.notifyEvent("Commands_OnNewStatusCSKStyle", commands_Model.styleForUI)
   Script.notifyEvent("Commands_OnNewStatusModuleIsActive", _G.availableAPIs.specific)
 
@@ -146,7 +146,7 @@ local function handleOnExpiredTmrCommands()
 
   Script.notifyEvent("Commands_OnNewLog", commands_Model.log)
 
-  Script.notifyEvent("Commands_OnNewStatusFlowConfigPriority", commands_Model.parameters.flowConfigPriority)
+  --Script.notifyEvent("Commands_OnNewStatusFlowConfigPriority", commands_Model.parameters.flowConfigPriority)
   Script.notifyEvent("Commands_OnNewStatusLoadParameterOnReboot", commands_Model.parameterLoadOnReboot)
   Script.notifyEvent("Commands_OnPersistentDataModuleAvailable", commands_Model.persistentModuleAvailable)
   Script.notifyEvent("Commands_OnNewParameterName", commands_Model.parametersName)
@@ -248,7 +248,11 @@ end
 Script.serveFunction('CSK_Commands.notifyEventViaUI', notifyEventViaUI)
 
 local function commandPrint(content)
-  print(content)
+  if not content then
+    print('')
+  else
+    print(content)
+  end
 end
 Script.serveFunction('CSK_Commands.print', commandPrint)
 
