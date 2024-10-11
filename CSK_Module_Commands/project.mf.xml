@@ -16,6 +16,7 @@ Typically the features of this module are used like this: +
 Select the type of command via 'setMode'. +
 Set the name of the function to call or event to notify ('setFunctionName' or 'setEventName'). +
 Optionally you can add parameters to the function / event. To do so, add parameters via 'setParameterAmount', selecte a parameter via 'setSelectedParameter', set the type of the parameter via 'setParameterType' and set the value via 'setParameterValue'. +
+After that you can call / notify the function / event via 'callFunctionViaUI' / 'notifyEventViaUI'. +
 {empty} + 
 ** 2) List of commands** +
 It is possible to set a list of commands to be called / notified one after another. +
