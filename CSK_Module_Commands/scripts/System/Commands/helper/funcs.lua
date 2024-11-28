@@ -17,6 +17,53 @@ funcs.json = require('System/Commands/helper/Json')
 --**********************Start Function Scope *******************************
 --**************************************************************************
 
+-- Function to copy table information of parameters
+---@param content auto[] Parameter data
+---@return auto[] parameterContent Copied content
+local function copyParameterContent(content)
+  local parameterContent = {}
+
+  for key, value in ipairs(content) do
+    local params = {}
+    params.type = content[key]['type']
+    params.value = content[key]['value']
+
+    table.insert(parameterContent, params)
+  end
+  return parameterContent
+end
+funcs.copyParameterContent = copyParameterContent
+
+--- Function to create a json string out of command list
+---@param content string[] Table with commands
+---@param selectedParam int Currently selected parameter
+---@return string jsonstring JSON string
+local function createJsonListCommands(content, selectedParam)
+
+  local list = {}
+  if content == nil then
+    list = {{DTC_ID = '-', DTC_Type = '-', DTC_Name = '-', DTC_ParameterAmount = '-'},}
+  else
+
+    for key, value in ipairs(content) do
+      --local paramName = 'param' .. tostring(key)
+      local isSelected = false
+      if key == selectedParam then
+        isSelected = true
+      end
+      table.insert(list, {DTC_ID = tostring(key), DTC_Type = content[key]['type'], DTC_Name = content[key]['name'], DTC_ParameterAmount = tostring(#content[key]['parameters']), selected = isSelected})
+    end
+
+    if #list == 0 then
+      list = {{DTC_ID = '-', DTC_Type = '-', DTC_Name = '-', DTC_ParameterAmount = '-'},}
+    end
+  end
+
+  local jsonstring = funcs.json.encode(list)
+  return jsonstring
+end
+funcs.createJsonListCommands = createJsonListCommands
+
 --- Function to create a list with numbers
 ---@param size int Size of the list
 ---@return string list List of numbers

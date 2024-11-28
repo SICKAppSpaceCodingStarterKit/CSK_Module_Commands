@@ -6,15 +6,22 @@
         </crown>
         <crown name="CSK_Commands">
             <trait>released</trait>
-            <desc>Please fill in information regarding: What is the idea of this module and its features? +
-How to use this module in general.... like: + 
+            <desc>Module to dynamically call served functions or notify served events during runtime. +
+By using this module it is possible to adapt the application without the need to stop it and to adapt the code. +
+Check UI of this module for most available features. +
 {empty} + 
-Typically the features of this module are used like this (check also main script of this module): +
-**1) Setup** +
-ToDo +
+Typically the features of this module are used like this: +
 {empty} + 
-**2) Something else...** +
-</desc>
+** 1) Setup the command** +
+Select the type of command via 'setMode'. +
+Set the name of the function to call or event to notify ('setFunctionName' or 'setEventName'). +
+Optionally you can add parameters to the function / event. To do so, add parameters via 'setParameterAmount', selecte a parameter via 'setSelectedParameter', set the type of the parameter via 'setParameterType' and set the value via 'setParameterValue'. +
+After that you can call / notify the function / event via 'callFunctionViaUI' / 'notifyEventViaUI'. +
+{empty} + 
+** 2) List of commands** +
+It is possible to set a list of commands to be called / notified one after another. +
+This can be very helpful to summarize a procedure to configure the system by predefined function calls / events. +
+You can add a predefined command via 'addCommandViaUI' to that list and start the processing via 'runCommands'.</desc>
             <serves>
                 <event name="OnNewStatusLoadParameterOnReboot">
                     <desc>Notify status if parameters should be loaded on app/device boot up.</desc>
@@ -47,15 +54,73 @@ ToDo +
                     <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </event>
+                <event name="OnNewFunctionName">
+                    <desc>Event to notify name of function to execute.</desc>
+                    <param desc="Name of function (like CSK_ModuleName.FunctionName)." multiplicity="1" name="functionName" type="string"/>
+                </event>
+                <event name="OnNewStatusParameterType">
+                    <desc>Event to notify currently selected parameter values to use for function call.</desc>
+                    <param desc="Type of parameter." multiplicity="1" name="parameterType" type="string"/>
+                </event>
+                <event name="OnNewStatusParameterAmount">
+                    <desc>Notify amount of parameters to use for function call.</desc>
+                    <param desc="Amount of parameters." multiplicity="1" name="amount" type="int"/>
+                </event>
+                <event name="OnNewLog">
+                    <desc>Notify log messages.</desc>
+                    <param desc="Log messages." multiplicity="1" name="log" type="string"/>
+                </event>
+                <event name="OnNewStatusBoolParameterValue">
+                    <desc>Notify boolean value of parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="bool"/>
+                </event>
+                <event name="OnNewStatusStringParameterValue">
+                    <desc>Notify string value of parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="values" type="string"/>
+                </event>
+                <event name="OnNewStatusNumberParameterValue">
+                    <desc>Notify number value of parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="int"/>
+                </event>
+                <event name="OnNewStatusMode">
+                    <desc>Notfiy what mode to use</desc>
+                    <param desc="Mode to call Function or notfiy event" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewStatusEventName">
+                    <desc>Notify name of event to notify.</desc>
+                    <param desc="Name of event." multiplicity="1" name="name" type="string"/>
+                </event>
+                <event name="OnNewStatusFlowConfigPriority">
+                    <desc>Notify if FlowConfig should have priority for FlowConfig relevant configurations.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusCSKStyle">
+                    <desc>Notify UI style to use for CSK modules.</desc>
+                    <param desc="UI style" multiplicity="1" name="theme" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleVersion">
+                    <desc>Notify version of module.</desc>
+                    <param desc="Version" multiplicity="1" name="version" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleIsActive">
+                    <desc>Notify if module can be used on device.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusParameterList">
+                    <desc>Notify list of available parameters for command / event.</desc>
+                    <param desc="List" multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewStatusSelectedParameter">
+                    <desc>Notify selected parameter to edit.</desc>
+                    <param desc="Selected parameter." multiplicity="1" name="selection" type="string"/>
+                </event>
+                <event name="OnNewStatusCommandList">
+                    <desc>Notify list of commands.</desc>
+                    <param desc="List of commands." multiplicity="1" name="list" type="string"/>
+                </event>
                 <function name="setParameterName">
                     <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
                     <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
-                </function>
-                <function name="sendParameters">
-                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
-                </function>
-                <function name="loadParameters">
-                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
                 </function>
                 <function name="setLoadOnReboot">
                     <desc>Configure if this module should load its saved parameters at app/device boot up.</desc>
@@ -65,10 +130,88 @@ ToDo +
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
                 </function>
+                <function name="callFunctionViaUI">
+                    <desc>Function to call preconfigured function incl. optional set parameters.</desc>
+                </function>
+                <function name="setParameterAmount">
+                    <desc>Function to set amount of parameters to use for function call.</desc>
+                    <param desc="Amount of parameters." multiplicity="1" name="amount" type="int"/>
+                </function>
+                <function name="setFunctionName">
+                    <desc>Function to set function name to execute.</desc>
+                    <param desc="Name of function (like CSK_Module.FunctionName)" multiplicity="1" name="functionName" type="string"/>
+                </function>
+                <function name="print">
+                    <desc>Function to print dynamic content.</desc>
+                    <param desc="Content to print." multiplicity="?" name="content" type="string"/>
+                </function>
+                <function name="setParameterType">
+                    <desc>Function to set type of parameter.</desc>
+                    <param desc="Type to use." multiplicity="1" name="paramType" type="string"/>
+                </function>
+                <function name="setParameterValue">
+                    <desc>Function to set value of selected parameter.</desc>
+                    <param desc="Value to use." multiplicity="1" name="paramValue" type="auto"/>
+                </function>
+                <function name="setEventName">
+                    <desc>Function to set name of event to notify.</desc>
+                    <param desc="Name of event." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="setMode">
+                    <desc>Function to set mode of command.</desc>
+                    <param desc="Mode (Function or Event)" multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="notifyEventViaUI">
+                    <desc>Function to notify preconfigured event via UI.</desc>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                    <return desc="Success to load parameters." multiplicity="1" name="success" type="bool"/>
+                </function>
+                <function name="sendParameters">
+                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
+                    <param desc="[Optional] Set to TRUE if the data should NOT be saved immediately after sending." multiplicity="?" name="noDataSave" type="bool"/>
+                </function>
+                <function name="clearFlowConfigRelevantConfiguration">
+                    <desc>Function to clear FlowConfig relevant configurations.</desc>
+                </function>
+                <function name="setFlowConfigPriority">
+                    <desc>Function to configure if FlowConfig should have priority for FlowConfig relevant configuration. +
+INFO: FlowConfig has currently no effect for this module.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="getStatusModuleActive">
+                    <desc>Function to get status if module is active.</desc>
+                    <return desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="resetModule">
+                    <desc>Function to reset main configuration of module.</desc>
+                </function>
+                <function name="setSelectedParameter">
+                    <desc>Function to select a parameter to edit for function / event call.</desc>
+                    <param desc="Parameter to edit." multiplicity="1" name="selection" type="int"/>
+                </function>
+                <function name="addCommandViaUI">
+                    <desc>Function to add a command via UI.</desc>
+                </function>
+                <function name="selectCommandViaUI">
+                    <desc>Function to select a specific Command in UI table.</desc>
+                    <param desc="Selection" multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="removeCommandViaUI">
+                    <desc>Function to remove command within command list.</desc>
+                </function>
+                <function name="runCommands">
+                    <desc>Function to run all commands of currently active list.</desc>
+                </function>
+                <function name="sleep">
+                    <desc>Function to call 'Script.sleep'.</desc>
+                    <param desc="Time to sleep in ms." multiplicity="1" name="time" type="int"/>
+                </function>
             </serves>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">0.1.0</meta>
+        <meta key="version">1.0.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
