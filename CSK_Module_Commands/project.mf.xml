@@ -211,12 +211,12 @@ INFO: FlowConfig has currently no effect for this module.</desc>
             </serves>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">1.0.0</meta>
+        <meta key="version">1.0.1</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
         <meta key="crown2-flow-engine">false</meta>
-        <meta key="LuaLoadAllEngineAPI">true</meta>
+        <meta key="LuaLoadAllEngineAPI">false</meta>
         <entry default="CSK_Module_Commands.lua" path="scripts"/>
     </application>
 </manifest>
