@@ -5,12 +5,12 @@
         <layout-row id="RowLayout23">
             <layout-column id="ColumnLayout29" style="align-items: stretch">
                 <layout-row id="RowLayout24" style="align-items: baseline">
-                    <davinci-value-display id="VD_Title" class="myCustomLabel_CSK_Module_Commands" value="Commands">
-                    </davinci-value-display>
+                    <h1 id="Heading_Title" class="myCustomLabel_CSK_Module_Commands">
+                        Commands
+                    </h1>
                     <davinci-value-display id="VD_Version">
-                        <crown-edpws-binding property="value" name="CSK_Commands/OnNewStatusModuleVersion"
-                            update-on-resume>
-                        </crown-edpws-binding>
+                        <crown-on property="value" crown-event="CSK_Commands/OnNewStatusModuleVersion">
+                        </crown-on>
                     </davinci-value-display>
                 </layout-row>
             </layout-column>
@@ -55,9 +55,9 @@
                                                             style="justify-content: center; align-items: center">
                                                             <davinci-button id="B_LoadConfig"
                                                                 class="myCustomButton_CSK_Module_Commands"
-                                                                type="outline" icon-position="append"
-                                                                title="Load configured parameters from CSK_PersistentData module."
-                                                                icon="action/history">
+                                                                type="outline"
+                                                                title="Load configured parameters from CSK_PersistentData module.">
+                                                                <davinci-icon icon="action/history"></davinci-icon>
                                                                 <span></span>
                                                                 <crown-binding event="submit"
                                                                     name="CSK_Commands/loadParameters" auto-commit>
@@ -70,9 +70,9 @@
                                                             </davinci-button>
                                                             <davinci-button id="B_SaveConfig"
                                                                 class="myCustomButton_CSK_Module_Commands"
-                                                                type="outline" icon-position="append"
-                                                                title="Save current configured parameters of this module within CSK_PersistentData module."
-                                                                icon="content/save">
+                                                                type="outline"
+                                                                title="Save current configured parameters of this module within CSK_PersistentData module.">
+                                                                <davinci-icon icon="content/save"></davinci-icon>
                                                                 <span></span>
                                                                 <crown-binding event="submit"
                                                                     name="CSK_Commands/sendParameters" auto-commit>
@@ -207,8 +207,8 @@
                                                         style="align-items: center; justify-content: flex-end">
                                                         <davinci-button id="Button_Execute"
                                                             class="myCustomButton_CSK_Module_Commands" type="outline"
-                                                            icon-position="append" title="Execute function call"
-                                                            icon="content/send">
+                                                            title="Execute function call">
+                                                            <davinci-icon icon="content/send"></davinci-icon>
                                                             <span></span>
                                                             <crown-binding event="submit"
                                                                 name="CSK_Commands/callFunctionViaUI" auto-commit>
@@ -237,8 +237,8 @@
                                                         style="align-items: center; justify-content: flex-end">
                                                         <davinci-button id="Button_Notify"
                                                             class="myCustomButton_CSK_Module_Commands" type="outline"
-                                                            icon-position="append" title="Notify event"
-                                                            icon="content/send">
+                                                            title="Notify event">
+                                                            <davinci-icon icon="content/send"></davinci-icon>
                                                             <span></span>
                                                             <crown-binding event="submit"
                                                                 name="CSK_Commands/notifyEventViaUI" auto-commit>
@@ -394,8 +394,8 @@
                                     <layout-column id="ColumnLayout16" style="align-items: center">
                                         <layout-row id="RowLayout4">
                                             <davinci-button id="Button_Run" class="myCustomButton_CSK_Module_Commands"
-                                                type="outline" icon-position="append" title="Run all listed commands."
-                                                icon="av/play_arrow">
+                                                type="outline" title="Run all listed commands.">
+                                                <davinci-icon icon="av/play_arrow"></davinci-icon>
                                                 <span></span>
                                                 <crown-binding event="submit" name="CSK_Commands/runCommands"
                                                     auto-commit>
@@ -403,8 +403,8 @@
                                             </davinci-button>
                                             <davinci-button id="Button_AddParameter"
                                                 class="myCustomButton_CSK_Module_Commands" type="outline"
-                                                icon-position="append" title="Add preconfigured command to list."
-                                                icon="content/add">
+                                                title="Add preconfigured command to list.">
+                                                <davinci-icon icon="content/add"></davinci-icon>
                                                 <span></span>
                                                 <crown-binding event="submit" name="CSK_Commands/addCommandViaUI"
                                                     auto-commit>
@@ -412,8 +412,8 @@
                                             </davinci-button>
                                             <davinci-button id="Button_RemoveParameter"
                                                 class="myCustomButton_CSK_Module_Commands" type="outline"
-                                                icon-position="append" title="Remove selected command from list."
-                                                icon="action/delete">
+                                                title="Remove selected command from list.">
+                                                <davinci-icon icon="action/delete"></davinci-icon>
                                                 <span></span>
                                                 <crown-binding event="submit" name="CSK_Commands/removeCommandViaUI"
                                                     auto-commit>
